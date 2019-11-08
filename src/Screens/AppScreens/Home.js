@@ -38,7 +38,6 @@ class myHome extends Component {
                   textStyle={{color: 'gray'}}
                   activeTextStyle={{color: 'gray', fontWeight: 'bold'}}>
                   <Task navigation={this.props.navigation} />
-                  <Modal navigation={this.props.navigation} />
                 </Tab>
                 <Tab
                   heading="DONE"
@@ -50,7 +49,8 @@ class myHome extends Component {
             </Container>
           </Row>
         </Grid>
-        <Fab navigation={this.props.navigation} />
+        <Modal />
+        {/* <Fab navigation={this.props.navigation}/> */}
       </SafeAreaView>
     );
   }
