@@ -7,12 +7,49 @@ import Header from '../../Components/Navbar/HeaderNav';
 import Fab from '../../Components/Fabs/MainFab';
 import Task from '../AppScreens/Task';
 import Modal from '../../Components/Modals/NewTask';
+import {db} from '../../Configs/firebase';
 
 class myHome extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      task: [],
+      tempTask: [],
+      indexTask: [],
+      isLoading: true,
+      isModalVisible: false,
+      isModalEditVisible: false,
+    };
   }
+
+  toggleModal = (tempTask, index) => {
+    console.log('my temp aa = ', tempTask);
+    this.setState({
+      isModalVisible: !this.state.isModalVisible,
+      tempTask: tempTask,
+      indexTask: index,
+    });
+  };
+
+  componentDidMount = () => {
+    db.ref('tasks/').on('value', result => {
+      let data = result.val();
+      if (data !== null) {
+        console.log('data = ', data);
+        let task = Object.values(data);
+        task.map((item, index) => {
+          this.setState({
+            task: Object.values(item),
+            isLoading: false,
+          });
+        });
+      }
+    });
+  };
+
   render() {
+    console.log('my task = ', this.state);
+    console.log('my status = ', this.state.isLoading);
     return (
       <SafeAreaView style={styles.container}>
         <Grid>
@@ -37,7 +74,17 @@ class myHome extends Component {
                   activeTabStyle={{backgroundColor: 'white'}}
                   textStyle={{color: 'gray'}}
                   activeTextStyle={{color: 'gray', fontWeight: 'bold'}}>
-                  <Task navigation={this.props.navigation} />
+                  {this.state.isLoading === true ? (
+                    <Text>loading..</Text>
+                  ) : (
+                    <>
+                      <Task
+                        navigation={this.props.navigation}
+                        taskData={this.state.task}
+                        toggleModal={this.toggleModal}
+                      />
+                    </>
+                  )}
                 </Tab>
                 <Tab
                   heading="DONE"
@@ -49,7 +96,11 @@ class myHome extends Component {
             </Container>
           </Row>
         </Grid>
-        <Modal />
+        <Modal
+          toggleModal={() => this.toggleModal()}
+          isModalVisible={this.state.isModalVisible}
+          dataEdit={this.state.tempTask}
+        />
         {/* <Fab navigation={this.props.navigation}/> */}
       </SafeAreaView>
     );

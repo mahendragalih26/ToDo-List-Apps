@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {Card, CardItem, Body, Icon} from 'native-base';
-import {Col, Row, Grid} from 'react-native-easy-grid';
+
 const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -68,77 +68,96 @@ function Item({title}) {
   );
 }
 
-export default function App(props) {
-  console.log('dari task = ', props);
-  return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={({item}) => (
-          <Fragment>
-            <ScrollView>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => props.navigation.navigate('TaskScreen')}>
-                <View style={styles.item}>
-                  <Card style={styles.content}>
-                    <CardItem style={styles.card}>
-                      <Body>
-                        <Text style={{fontSize: 15, paddingVertical: 3}}>
-                          {item.title}
-                        </Text>
-                      </Body>
-                    </CardItem>
-                    <CardItem style={styles.card} footer bordered>
-                      <View style={{width: '60%'}}>
-                        {item.color !== undefined ? (
+class TaskList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      taskData: [],
+    };
+  }
+
+  // handleTask = data => {
+  //   this.props.toggleModal(data);
+  // };
+
+  render() {
+    let {taskData} = this.props;
+    console.log('my task from state = ', taskData);
+    console.log('my props in task = ', this.props);
+    return (
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={taskData}
+          renderItem={({item, index}) => (
+            <Fragment>
+              <ScrollView>
+                <TouchableOpacity
+                  key={index}
+                  activeOpacity={0.8}
+                  onPress={() => this.props.toggleModal(item, index)}>
+                  <View style={styles.item}>
+                    <Card style={styles.content}>
+                      <CardItem style={styles.card}>
+                        <Body>
+                          <Text style={{fontSize: 15, paddingVertical: 3}}>
+                            {item.task}
+                          </Text>
+                        </Body>
+                      </CardItem>
+                      <CardItem style={styles.card} footer bordered>
+                        <View style={{width: '60%'}}>
+                          {item.color !== undefined ? (
+                            <>
+                              <Text
+                                style={{
+                                  width: 130,
+                                  backgroundColor: item.color,
+                                  height: 13,
+                                }}></Text>
+                            </>
+                          ) : null}
+                        </View>
+                        {item.chosenDate !== undefined ? (
                           <>
-                            <Text
+                            <View style={{width: '5%'}}>
+                              <Icon
+                                style={{
+                                  fontSize: 11,
+                                  alignItems: 'flex-end',
+                                }}
+                                type="FontAwesome"
+                                name="clock-o"
+                              />
+                            </View>
+                            <View
                               style={{
-                                width: 130,
-                                backgroundColor: item.color,
-                                height: 13,
-                              }}></Text>
+                                width: '40%',
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: 11,
+                                }}>
+                                &nbsp;{' '}
+                                {item.chosenDate.toString().substr(16, 8)}
+                              </Text>
+                            </View>
                           </>
                         ) : null}
-                      </View>
-                      {item.time !== undefined ? (
-                        <>
-                          <View style={{width: '5%'}}>
-                            <Icon
-                              style={{
-                                fontSize: 11,
-                                alignItems: 'flex-end',
-                              }}
-                              type="FontAwesome"
-                              name="clock-o"
-                            />
-                          </View>
-                          <View
-                            style={{
-                              width: '40%',
-                            }}>
-                            <Text
-                              style={{
-                                fontSize: 11,
-                              }}>
-                              &nbsp; {item.time}
-                            </Text>
-                          </View>
-                        </>
-                      ) : null}
-                    </CardItem>
-                  </Card>
-                </View>
-              </TouchableOpacity>
-            </ScrollView>
-          </Fragment>
-        )}
-        keyExtractor={item => item.id}
-      />
-    </SafeAreaView>
-  );
+                      </CardItem>
+                    </Card>
+                  </View>
+                </TouchableOpacity>
+              </ScrollView>
+            </Fragment>
+          )}
+          keyExtractor={item => item.id}
+        />
+      </SafeAreaView>
+    );
+  }
 }
+
+export default TaskList;
 
 const styles = StyleSheet.create({
   container: {

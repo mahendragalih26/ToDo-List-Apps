@@ -19,7 +19,7 @@ class myHeader extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>DeList</Title>
+            <Title>ToDo List</Title>
           </Body>
           <Right>
             <Button transparent>

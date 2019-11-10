@@ -35,6 +35,8 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+#Secreet Folder
+
 # BUCK
 buck-out/
 \.buckd/

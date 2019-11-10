@@ -4,6 +4,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import Splash from '../Screens/Splash';
 import Home from '../Screens/AppScreens/Home';
 import MyTask from '../Screens/AppScreens/MyTask';
+import MyModal from '../Components/Modals/NewTask';
 // import SignIn from '../Screens/AuthScreens/SignIn';
 // import SignUp from '../Screens/AuthScreens/SignUp';
 
@@ -30,6 +31,9 @@ const AppStack = createStackNavigator(
     },
     TaskScreen: {
       screen: MyTask,
+    },
+    MyModalScreen: {
+      screen: MyModal,
     },
   },
   {
